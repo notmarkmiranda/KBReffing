@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Game {
+struct Game: Identifiable {
     var id: UUID
     var date: Date
     var awayTeamName: String

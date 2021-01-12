@@ -11,30 +11,38 @@ struct ContentView: View {
     @EnvironmentObject var manager: Manager
     
     @State private var showAddGame = false
-    
+    @State private var hasNewGame = false
     
     let df = DateFormatter()
     
     var body: some View {
         NavigationView {
             VStack {
-                if (manager.games.isEmpty) {
+                NavigationLink(destination: BlankView(), isActive: $hasNewGame) {
+                    EmptyView()
+                }.hidden()
+                
+                if (manager.allGames.isEmpty) {
                     Text("There are no games.")
                 } else {
                     List {
-                        ForEach(0 ..< manager.games.count) { index in
+                        ForEach(manager.allGames) { game in
                             VStack(alignment: .leading) {
-                                Text(manager.games[index].formattedDate())
+                                Text(game.formattedDate())
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
-                                Text("\(manager.games[index].awayTeamName) vs. \(manager.games[index].homeTeamName)")
-                                    .font(.headline)
-                                Text(manager.games[index].stringStatus())
+                                HStack {
+                                    Text(game.awayTeamName).font(.headline)
+                                    Text(" vs. ").foregroundColor(.red)
+                                    Text(game.homeTeamName).font(.headline)
+                                }.padding(.vertical, 1)
+                                Text(game.stringStatus())
                                     .font(.subheadline)
-                                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                                    .foregroundColor(.blue)
                             }
                         }
                     }
+                    .listStyle(GroupedListStyle())
                 }
             }
             .navigationBarTitle(Text("Games"))
@@ -46,14 +54,21 @@ struct ContentView: View {
                                     })
             )
             .sheet(isPresented: self.$showAddGame) {
-                AddGame()
+                AddGame(hasNewGame: self.$hasNewGame)
                     .environmentObject(self.manager)
             }
         }
+        .onAppear { print(manager.allGames) }
     }
     
     func addGame() {
         print("howdy")
+    }
+}
+
+struct BlankView: View {
+    var body: some View {
+        Text("hello")
     }
 }
 

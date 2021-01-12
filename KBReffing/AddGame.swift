@@ -22,6 +22,16 @@ struct AddGame: View {
     @EnvironmentObject var manager: Manager
     @Environment(\.presentationMode) var presentationMode
     
+    @Binding private var hasNewGame: Bool
+
+    private func buildGame() -> Game {
+        Game(id: UUID(), date: gameDate, awayTeamName: awayTeam, homeTeamName: homeTeam)
+    }
+    
+    init(hasNewGame: Binding<Bool>) {
+        _hasNewGame = hasNewGame
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -77,7 +87,9 @@ struct AddGame: View {
                     }),
                 trailing:
                     Button(action: {
-                        self.manager.allGames.append()
+                        let game = buildGame()
+                        self.manager.allGames.append(game)
+                        self.hasNewGame = true
                         self.presentationMode.wrappedValue.dismiss()
                     }, label: {
                         Text("Go")
@@ -88,7 +100,8 @@ struct AddGame: View {
 }
 
 struct AddGame_Previews: PreviewProvider {
+    @State static var value = false
     static var previews: some View {
-        AddGame()
+        AddGame(hasNewGame: $value)
     }
 }
