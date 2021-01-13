@@ -13,6 +13,8 @@ struct Game: Identifiable {
     var awayTeamName: String
     var homeTeamName: String
     var status: GameStatus = GameStatus.notStarted
+    var numbersDictionary: [String: Int]
+    var booleanDictionary: [String: Bool]
     
     let df = DateFormatter()
     
@@ -33,10 +35,10 @@ struct Game: Identifiable {
     }
     
     #if DEBUG
-    static let example = Game(id: UUID(), date: Date(), awayTeamName: "The Dinosaurs", homeTeamName: "Lot Lizards", status: GameStatus.inProgress)
+    static let example = Game(id: UUID(), date: Date(), awayTeamName: "The Dinosaurs", homeTeamName: "Lot Lizards", status: GameStatus.inProgress, numbersDictionary: ["outsPerInning": 3, "strikesFoulsPerOut": 5, "strikesPerOut": 3, "foulsPerOut": 4, "ballsPerWalk": 4], booleanDictionary: ["combineStrikesFouls": true, "canFoulOut": true])
     static let examples = [
-        Game(id: UUID(), date: Date(), awayTeamName: "The Dinosaurs", homeTeamName: "Lot Lizards", status: GameStatus.notStarted),
-        Game(id: UUID(), date: Date(), awayTeamName: "Stu Gotz", homeTeamName: "The Poops", status: GameStatus.finished)
+        Game(id: UUID(), date: Date(), awayTeamName: "The Dinosaurs", homeTeamName: "Lot Lizards", status: GameStatus.notStarted, numbersDictionary: ["outsPerInning": 3, "strikesFoulsPerOut": 5, "strikesPerOut": 3, "foulsPerOut": 4, "ballsPerWalk": 4], booleanDictionary: ["combineStrikesFouls": true, "canFoulOut": true]),
+        Game(id: UUID(), date: Date(), awayTeamName: "Stu Gotz", homeTeamName: "The Poops", status: GameStatus.finished, numbersDictionary: ["outsPerInning": 3, "strikesFoulsPerOut": 5, "strikesPerOut": 3, "foulsPerOut": 4, "ballsPerWalk": 4], booleanDictionary: ["combineStrikesFouls": true, "canFoulOut": true])
     ]
     #endif
 }

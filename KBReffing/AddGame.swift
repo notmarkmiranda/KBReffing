@@ -25,7 +25,23 @@ struct AddGame: View {
     @Binding private var hasNewGame: Bool
 
     private func buildGame() -> Game {
-        Game(id: UUID(), date: gameDate, awayTeamName: awayTeam, homeTeamName: homeTeam)
+        Game(
+            id: UUID(),
+            date: gameDate,
+            awayTeamName: awayTeam,
+            homeTeamName: homeTeam,
+            numbersDictionary: [
+                "outsPerInning": outsPerInning,
+                "strikesFoulsPerOut": strikesFoulsPerOut,
+                "strikesPerOut": strikesPerOut,
+                "foulsPerOut": foulsPerOut,
+                "ballsPerWalk": ballsPerWalk
+            ],
+            booleanDictionary: [
+                "combineStrikesFouls": combineStrikesFouls,
+                "canFoulOut": canFoulOut,
+            ]
+        )
     }
     
     init(hasNewGame: Binding<Bool>) {
@@ -58,7 +74,9 @@ struct AddGame: View {
                     
                     Section(header: Text("Teams")) {
                         TextField("Away Team", text: $awayTeam)
+                            .disableAutocorrection(true)
                         TextField("Home Team", text: $homeTeam)
+                            .disableAutocorrection(true)
                     }
                     
                     Section(header: Text("Game Deets")) {

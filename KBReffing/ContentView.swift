@@ -27,18 +27,20 @@ struct ContentView: View {
                 } else {
                     List {
                         ForEach(manager.allGames) { game in
-                            VStack(alignment: .leading) {
-                                Text(game.formattedDate())
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                                HStack {
-                                    Text(game.awayTeamName).font(.headline)
-                                    Text(" vs. ").foregroundColor(.red)
-                                    Text(game.homeTeamName).font(.headline)
-                                }.padding(.vertical, 1)
-                                Text(game.stringStatus())
-                                    .font(.subheadline)
-                                    .foregroundColor(.blue)
+                            NavigationLink(destination: BlankView()) {
+                                VStack(alignment: .leading) {
+                                    Text(game.formattedDate())
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                    HStack {
+                                        Text(game.awayTeamName).font(.headline)
+                                        Text(" vs. ").foregroundColor(.red)
+                                        Text(game.homeTeamName).font(.headline)
+                                    }.padding(.vertical, 1)
+                                    Text(game.stringStatus())
+                                        .font(.subheadline)
+                                        .foregroundColor(.blue)
+                                }
                             }
                         }
                     }
