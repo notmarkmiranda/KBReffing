@@ -32,6 +32,22 @@ struct AddGame: View {
         _hasNewGame = hasNewGame
     }
     
+    var isFormValid: Bool {
+        areTeamNamesEmpty() || areTeamNamesTheSame()
+    }
+    
+    private func areTeamNamesEmpty() -> Bool {
+        awayTeam.isEmpty || homeTeam.isEmpty
+    }
+    
+    private func areTeamNamesTheSame() -> Bool {
+        awayTeam.lowercased() == homeTeam.lowercased()
+    }
+    
+    private func namesAreNotTheSame() -> Bool {
+        awayTeam != homeTeam
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -93,7 +109,7 @@ struct AddGame: View {
                         self.presentationMode.wrappedValue.dismiss()
                     }, label: {
                         Text("Go")
-                    })
+                    }).disabled(isFormValid)
             )
         }
     }
