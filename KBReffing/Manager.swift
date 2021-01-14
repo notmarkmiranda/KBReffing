@@ -14,4 +14,8 @@ class Manager: ObservableObject {
     init(games: [Game] = []) {
         self.games = games
     }
+    
+    func removeGame(at offsets: IndexSet) {
+        allGames.remove(atOffsets: offsets)
+    }
 }
