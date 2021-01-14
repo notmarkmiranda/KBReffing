@@ -34,11 +34,19 @@ struct Game: Identifiable {
         }
     }
     
+    func numberOfInnings() -> Int {
+        if let innings = numbersDictionary["numberOfInnings"] {
+            return innings
+        } else {
+            return 99
+        }
+    }
+    
     #if DEBUG
-    static let example = Game(id: UUID(), date: Date(), awayTeamName: "The Dinosaurs", homeTeamName: "Lot Lizards", status: GameStatus.inProgress, numbersDictionary: ["outsPerInning": 3, "strikesFoulsPerOut": 5, "strikesPerOut": 3, "foulsPerOut": 4, "ballsPerWalk": 4], booleanDictionary: ["combineStrikesFouls": true, "canFoulOut": true])
+    static let example = Game(id: UUID(), date: Date(), awayTeamName: "The Dinosaurs", homeTeamName: "Lot Lizards", status: GameStatus.inProgress, numbersDictionary: ["numberOfInnings": 5, "outsPerInning": 3, "strikesFoulsPerOut": 5, "strikesPerOut": 3, "foulsPerOut": 4, "ballsPerWalk": 4], booleanDictionary: ["combineStrikesFouls": true, "canFoulOut": true])
     static let examples = [
-        Game(id: UUID(), date: Date(), awayTeamName: "The Dinosaurs", homeTeamName: "Lot Lizards", status: GameStatus.notStarted, numbersDictionary: ["outsPerInning": 3, "strikesFoulsPerOut": 5, "strikesPerOut": 3, "foulsPerOut": 4, "ballsPerWalk": 4], booleanDictionary: ["combineStrikesFouls": true, "canFoulOut": true]),
-        Game(id: UUID(), date: Date(), awayTeamName: "Stu Gotz", homeTeamName: "The Poops", status: GameStatus.finished, numbersDictionary: ["outsPerInning": 3, "strikesFoulsPerOut": 5, "strikesPerOut": 3, "foulsPerOut": 4, "ballsPerWalk": 4], booleanDictionary: ["combineStrikesFouls": true, "canFoulOut": true])
+        Game(id: UUID(), date: Date(), awayTeamName: "The Dinosaurs", homeTeamName: "Lot Lizards", status: GameStatus.notStarted, numbersDictionary: ["numberOfInnings": 5, "outsPerInning": 3, "strikesFoulsPerOut": 5, "strikesPerOut": 3, "foulsPerOut": 4, "ballsPerWalk": 4], booleanDictionary: ["combineStrikesFouls": true, "canFoulOut": true]),
+        Game(id: UUID(), date: Date(), awayTeamName: "Stu Gotz", homeTeamName: "The Poops", status: GameStatus.finished, numbersDictionary: ["numberOfInnings": 5, "outsPerInning": 3, "strikesFoulsPerOut": 5, "strikesPerOut": 3, "foulsPerOut": 4, "ballsPerWalk": 4], booleanDictionary: ["combineStrikesFouls": true, "canFoulOut": true])
     ]
     #endif
 }
