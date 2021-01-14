@@ -43,9 +43,11 @@ struct ContentView: View {
                                 }
                             }
                         }
+                        .onDelete(perform: deleteGame)
                     }
                     .listStyle(GroupedListStyle())
                 }
+                
             }
             .navigationBarTitle(Text("Games"))
             .navigationBarItems(trailing:
@@ -60,12 +62,16 @@ struct ContentView: View {
                     .environmentObject(self.manager)
             }
         }
-        .onAppear { print(manager.allGames) }
     }
     
     func addGame() {
         print("howdy")
     }
+    
+    func deleteGame(at offsets: IndexSet) {
+        manager.removeGame(at: offsets)
+    }
+    
 }
 
 struct BlankView: View {
