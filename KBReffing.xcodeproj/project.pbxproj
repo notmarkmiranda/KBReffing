@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B413931E25AFF46500ED544E /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B413931D25AFF46500ED544E /* GameTests.swift */; };
 		B4168BCC25ABFC300061B52D /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4168BCB25ABFC300061B52D /* Manager.swift */; };
 		B420BC4F256CB3E7005E39A9 /* AddGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B420BC4E256CB3E7005E39A9 /* AddGame.swift */; };
 		B4941FBF256C6E8200ED6DC5 /* KBReffingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4941FBE256C6E8200ED6DC5 /* KBReffingApp.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B413931D25AFF46500ED544E /* GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
 		B4168BCB25ABFC300061B52D /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		B420BC4E256CB3E7005E39A9 /* AddGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGame.swift; sourceTree = "<group>"; };
 		B4941FBB256C6E8200ED6DC5 /* KBReffing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KBReffing.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +128,7 @@
 			children = (
 				B4941FD0256C6E8400ED6DC5 /* KBReffingTests.swift */,
 				B4941FD2256C6E8400ED6DC5 /* Info.plist */,
+				B413931D25AFF46500ED544E /* GameTests.swift */,
 			);
 			path = KBReffingTests;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4941FD1256C6E8400ED6DC5 /* KBReffingTests.swift in Sources */,
+				B413931E25AFF46500ED544E /* GameTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
