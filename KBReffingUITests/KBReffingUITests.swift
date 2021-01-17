@@ -8,13 +8,20 @@
 import XCTest
 
 class KBReffingUITests: XCTestCase {
-
-    func testExample() throws {
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+    }
+    
+    func testInitialViewState() throws {
         let app = XCUIApplication()
         app.launch()
         
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let navTitle = app.navigationBars["Games"]
+        let noGamesText = app.staticTexts["noGames"]
+        
+        XCTAssert(navTitle.exists)
+        XCTAssert(noGamesText.exists)
+        XCTAssertEqual(noGamesText.label, "There are no games.")
     }
 
 }
