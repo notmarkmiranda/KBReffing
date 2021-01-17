@@ -24,6 +24,7 @@ struct ContentView: View {
                 
                 if (manager.allGames.isEmpty) {
                     Text("There are no games.")
+                        .accessibilityIdentifier("noGames")
                 } else {
                     List {
                         ForEach(manager.allGames) { game in
@@ -49,7 +50,7 @@ struct ContentView: View {
                 }
                 
             }
-            .navigationBarTitle(Text("Games"))
+            .navigationTitle(Text("Games"))
             .navigationBarItems(trailing:
                                     Button(action: {
                                         self.showAddGame = true

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Game: Identifiable {
+struct Game: Identifiable & Codable {
     var id: UUID
     var date: Date
     var awayTeamName: String
@@ -16,9 +16,8 @@ struct Game: Identifiable {
     var numbersDictionary: [String: Int]
     var booleanDictionary: [String: Bool]
     
-    let df = DateFormatter()
-    
     func formattedDate() -> String {
+        let df = DateFormatter()
         df.dateStyle = .medium
         return df.string(from: self.date)
     }
@@ -51,6 +50,6 @@ struct Game: Identifiable {
     #endif
 }
 
-enum GameStatus {
+enum GameStatus: String, Codable {
     case notStarted, inProgress, finished
 }
