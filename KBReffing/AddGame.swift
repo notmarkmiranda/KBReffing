@@ -122,7 +122,7 @@ struct AddGame: View {
                 trailing:
                     Button(action: {
                         let game = buildGame()
-                        self.manager.allGames.append(game)
+                        self.manager.addGame(game)
                         self.hasNewGame = true
                         self.presentationMode.wrappedValue.dismiss()
                     }, label: {
