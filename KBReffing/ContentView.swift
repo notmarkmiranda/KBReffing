@@ -27,26 +27,37 @@ struct ContentView: View {
                         .accessibilityIdentifier("noGames")
                 } else {
                     List {
-                        ForEach(manager.allGames) { game in
+//                        ForEach(manager.allGames) { game in
+                        ForEach(0..<manager.allGames.count) { index in
+                            let game = manager.allGames[index]
+                            
                             NavigationLink(destination: BlankView()) {
                                 VStack(alignment: .leading) {
                                     Text(game.formattedDate())
                                         .font(.subheadline)
                                         .foregroundColor(.gray)
                                     HStack {
-                                        Text(game.awayTeamName).font(.headline)
+                                        Text(game.awayTeamName)
+                                            .font(.headline)
                                         Text(" vs. ").foregroundColor(.red)
-                                        Text(game.homeTeamName).font(.headline)
-                                    }.padding(.vertical, 1)
+                                        Text(game.homeTeamName)
+                                            .font(.headline)
+                                    }
+                                    .padding(.vertical, 1)
+                                    .accessibility(identifier: "HEY")
                                     Text(game.stringStatus())
                                         .font(.subheadline)
                                         .foregroundColor(.blue)
                                 }
+                                
                             }
+                            .accessibilityIdentifier("game\(index)")
+                            
                         }
                         .onDelete(perform: deleteGame)
                     }
                     .listStyle(GroupedListStyle())
+                    .accessibility(identifier: "gameList")
                 }
                 
             }
@@ -62,7 +73,8 @@ struct ContentView: View {
                 AddGame(hasNewGame: self.$hasNewGame)
                     .environmentObject(self.manager)
             }
-        }
+            
+        }.onAppear { loadGames() }
     }
     
     func addGame() {
@@ -73,6 +85,14 @@ struct ContentView: View {
         manager.removeGame(at: offsets)
     }
     
+    func loadGames() {
+        do {
+            try manager.setGames()
+            print(manager.allGames)
+        } catch {
+            print(error)
+        }
+    }
 }
 
 struct BlankView: View {

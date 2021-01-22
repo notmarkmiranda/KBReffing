@@ -9,20 +9,27 @@ import Foundation
 
 class Manager: ObservableObject {
     @Published var allGames: [Game] = []
-    var games: [Game] = []
-    
-    init(games: [Game] = []) {
-        self.games = games
-    }
+    let defaults = UserDefaults.standard
     
     func addGame(_ game: Game) {
-        allGames.append(game)
+        self.allGames.append(game)
+        print("HOW: \(self.allGames)")
         setDefaults()
     }
     
     func removeGame(at offsets: IndexSet) {
         allGames.remove(atOffsets: offsets)
+        print(allGames)
         setDefaults()
+    }
+    
+    func setGames() throws {
+        if let games = defaults.object(forKey: "games") as? Data {
+            let decoder = JSONDecoder()
+            if let decodedGames = try? decoder.decode(Array<Game>.self, from: games) {
+                allGames = decodedGames
+            }
+        }
     }
     
     private func setDefaults() -> Void {
@@ -30,7 +37,7 @@ class Manager: ObservableObject {
         
         do {
             let encodedGames = try encoder.encode(allGames)
-            UserDefaults.standard.set(encodedGames, forKey: "games")
+            defaults.set(encodedGames, forKey: "games")
         } catch {
             print(error)
         }

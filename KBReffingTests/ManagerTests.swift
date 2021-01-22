@@ -12,6 +12,7 @@ class ManagerTests: XCTestCase {
     let manager = Manager()
     let defaults = UserDefaults.standard
     let encoder = JSONEncoder()
+    let decoder = JSONDecoder()
     let cal = Calendar.current
     let uuid = UUID()
     
@@ -52,8 +53,24 @@ class ManagerTests: XCTestCase {
         XCTAssert(games.count == 0)
     }
     
+    func testSetGamesWhenNoGamesExist() throws {
+        try manager.setGames()
+        XCTAssertEqual(manager.allGames, [])
+    }
+    
+    func testSetGamesWhenGamesExist() throws {
+        do {
+            let encodedGames = try encoder.encode([game])
+            UserDefaults.standard.set(encodedGames, forKey: "games")
+        } catch {
+            print(error)
+        }
+        
+        try manager.setGames()
+        XCTAssert(manager.allGames.count == 1)
+    }
+    
     private func getGamesFromDefaults() throws -> [Game] {
-        let decoder = JSONDecoder()
         let games = defaults.object(forKey: "games") as! Data
         return try decoder.decode(Array.self, from: games) as [Game]
     }
