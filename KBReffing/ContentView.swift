@@ -98,6 +98,7 @@ struct ContentView: View {
 struct BlankView: View {
     var body: some View {
         Text("hello")
+            .accessibility(identifier: "howdy")
     }
 }
 

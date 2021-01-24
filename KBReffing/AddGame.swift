@@ -11,6 +11,7 @@ struct AddGame: View {
     @State private var gameDate: Date = Date()
     @State private var awayTeam: String = ""
     @State private var homeTeam: String = ""
+    @State private var numberOfInnings: Int = 5
     @State private var outsPerInning: Int = 3
     @State private var combineStrikesFouls: Bool = true
     @State private var strikesFoulsPerOut: Int = 5
@@ -31,6 +32,7 @@ struct AddGame: View {
             awayTeamName: awayTeam,
             homeTeamName: homeTeam,
             numbersDictionary: [
+                "numberOfInnings": numberOfInnings,
                 "outsPerInning": outsPerInning,
                 "strikesFoulsPerOut": strikesFoulsPerOut,
                 "strikesPerOut": strikesPerOut,
@@ -75,11 +77,17 @@ struct AddGame: View {
                     Section(header: Text("Teams")) {
                         TextField("Away Team", text: $awayTeam)
                             .disableAutocorrection(true)
+                            .accessibility(identifier: "awayTeamField")
                         TextField("Home Team", text: $homeTeam)
                             .disableAutocorrection(true)
+                            .accessibility(identifier: "homeTeamField")
                     }
                     
                     Section(header: Text("Game Deets")) {
+                        Stepper(value: $numberOfInnings, in: 1...9) {
+                            Text("Number of innings: \(numberOfInnings)")
+                        }
+                        .accessibility(identifier: "numberOfInningsStepper")
                         Stepper(value: $outsPerInning, in: 1...6) {
                             Text("Outs per inning: \(outsPerInning)")
                         }
@@ -127,7 +135,9 @@ struct AddGame: View {
                         self.presentationMode.wrappedValue.dismiss()
                     }, label: {
                         Text("Go")
-                    }).disabled(isFormValid)
+                    })
+                    .disabled(isFormValid)
+                    .accessibility(identifier: "goButton")
             )
         }
     }

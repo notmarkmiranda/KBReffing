@@ -6,7 +6,6 @@
 //
 
 import XCTest
-@testable import KBReffing
 
 class KBReffingUITests: XCTestCase {
     override func setUpWithError() throws {
