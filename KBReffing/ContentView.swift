@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var manager: Manager
+    @StateObject var manager = Manager()
     
     @State private var showAddGame = false
     @State private var hasNewGame = false
@@ -27,10 +27,7 @@ struct ContentView: View {
                         .accessibilityIdentifier("noGames")
                 } else {
                     List {
-//                        ForEach(manager.allGames) { game in
-                        ForEach(0..<manager.allGames.count) { index in
-                            let game = manager.allGames[index]
-                            
+                        ForEach(manager.allGames) { game in
                             NavigationLink(destination: BlankView()) {
                                 VStack(alignment: .leading) {
                                     Text(game.formattedDate())
@@ -49,17 +46,14 @@ struct ContentView: View {
                                         .font(.subheadline)
                                         .foregroundColor(.blue)
                                 }
-                                
                             }
-                            .accessibilityIdentifier("game\(index)")
-                            
+                            .accessibilityIdentifier("game\(manager.gameIndex(game))")
                         }
                         .onDelete(perform: deleteGame)
                     }
                     .listStyle(GroupedListStyle())
                     .accessibility(identifier: "gameList")
                 }
-                
             }
             .navigationTitle(Text("Games"))
             .navigationBarItems(trailing:
@@ -70,19 +64,14 @@ struct ContentView: View {
                                     })
             )
             .sheet(isPresented: self.$showAddGame) {
-                AddGame(hasNewGame: self.$hasNewGame)
-                    .environmentObject(self.manager)
+                AddGame(hasNewGame: self.$hasNewGame, manager: manager)
             }
             
         }.onAppear { loadGames() }
     }
     
-    func addGame() {
-        print("howdy")
-    }
-    
     func deleteGame(at offsets: IndexSet) {
-        manager.removeGame(at: offsets)
+        self.manager.removeGame(at: offsets)
     }
     
     func loadGames() {

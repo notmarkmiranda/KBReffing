@@ -20,7 +20,7 @@ struct AddGame: View {
     @State private var foulsPerOut: Int = 4
     @State private var ballsPerWalk: Int = 4
     
-    @EnvironmentObject var manager: Manager
+    @ObservedObject var _manager: Manager
     @Environment(\.presentationMode) var presentationMode
     
     @Binding private var hasNewGame: Bool
@@ -46,8 +46,9 @@ struct AddGame: View {
         )
     }
     
-    init(hasNewGame: Binding<Bool>) {
+    init(hasNewGame: Binding<Bool>, manager: Manager) {
         _hasNewGame = hasNewGame
+        _manager = manager
     }
     
     var isFormValid: Bool {
@@ -130,7 +131,7 @@ struct AddGame: View {
                 trailing:
                     Button(action: {
                         let game = buildGame()
-                        self.manager.addGame(game)
+                        _manager.addGame(game)
                         self.hasNewGame = true
                         self.presentationMode.wrappedValue.dismiss()
                     }, label: {
@@ -146,6 +147,6 @@ struct AddGame: View {
 struct AddGame_Previews: PreviewProvider {
     @State static var value = false
     static var previews: some View {
-        AddGame(hasNewGame: $value)
+        AddGame(hasNewGame: $value, manager: Manager())
     }
 }
