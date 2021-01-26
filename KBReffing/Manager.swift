@@ -12,14 +12,17 @@ class Manager: ObservableObject {
     let defaults = UserDefaults.standard
     
     func addGame(_ game: Game) {
-        self.allGames.append(game)
-        print("HOW: \(self.allGames)")
+        allGames.append(game)
         setDefaults()
+    }
+    
+    func gameIndex(_ game: Game) -> Int {
+        guard let index = allGames.firstIndex(of: game) else { return 99 }
+        return index
     }
     
     func removeGame(at offsets: IndexSet) {
         allGames.remove(atOffsets: offsets)
-        print(allGames)
         setDefaults()
     }
     

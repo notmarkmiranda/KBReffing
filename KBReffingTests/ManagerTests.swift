@@ -70,6 +70,15 @@ class ManagerTests: XCTestCase {
         XCTAssert(manager.allGames.count == 1)
     }
     
+    func testGameIndexWhenItExists() throws {
+        manager.addGame(game)
+        XCTAssertEqual(manager.gameIndex(game), 0)
+    }
+    
+    func testGameIndexWhenItDoesNotExist() throws {
+        XCTAssertEqual(manager.gameIndex(game), 99)
+    }
+    
     private func getGamesFromDefaults() throws -> [Game] {
         let games = defaults.object(forKey: "games") as! Data
         return try decoder.decode(Array.self, from: games) as [Game]
