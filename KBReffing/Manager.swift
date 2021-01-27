@@ -9,10 +9,13 @@ import Foundation
 
 class Manager: ObservableObject {
     @Published var allGames: [Game] = []
+    @Published var selectedGame: Game?
+    
     let defaults = UserDefaults.standard
     
     func addGame(_ game: Game) {
-        allGames.append(game)
+        self.allGames.append(game)
+        self.selectedGame = game
         setDefaults()
     }
     

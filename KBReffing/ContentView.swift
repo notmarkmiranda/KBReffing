@@ -12,18 +12,20 @@ struct ContentView: View {
     
     @State private var showAddGame = false
     @State private var hasNewGame = false
+    @State private var selectedGame: Game? = nil
     
     let df = DateFormatter()
     
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: BlankView(), isActive: $hasNewGame) {
+                NavigationLink(destination: GameDetailScoring(game: manager.selectedGame), isActive: $hasNewGame) {
                     EmptyView()
                 }.hidden()
+                
                 List {
                     ForEach(manager.allGames) { game in
-                        NavigationLink(destination: BlankView()) {
+                        NavigationLink(destination: GameDetailScoring(game: game)) {
                             GameCell(game: game)
                         }
                         .accessibilityIdentifier("game\(manager.gameIndex(game))")
@@ -83,14 +85,6 @@ struct GameCell: View {
                 .font(.subheadline)
                 .foregroundColor(.blue)
         }
-    }
-}
-
-
-struct BlankView: View {
-    var body: some View {
-        Text("hello")
-            .accessibility(identifier: "howdy")
     }
 }
 
