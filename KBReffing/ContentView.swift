@@ -21,39 +21,17 @@ struct ContentView: View {
                 NavigationLink(destination: BlankView(), isActive: $hasNewGame) {
                     EmptyView()
                 }.hidden()
-                
-                if (manager.allGames.isEmpty) {
-                    Text("There are no games.")
-                        .accessibilityIdentifier("noGames")
-                } else {
-                    List {
-                        ForEach(manager.allGames) { game in
-                            NavigationLink(destination: BlankView()) {
-                                VStack(alignment: .leading) {
-                                    Text(game.formattedDate())
-                                        .font(.subheadline)
-                                        .foregroundColor(.gray)
-                                    HStack {
-                                        Text(game.awayTeamName)
-                                            .font(.headline)
-                                        Text(" vs. ").foregroundColor(.red)
-                                        Text(game.homeTeamName)
-                                            .font(.headline)
-                                    }
-                                    .padding(.vertical, 1)
-                                    .accessibility(identifier: "HEY")
-                                    Text(game.stringStatus())
-                                        .font(.subheadline)
-                                        .foregroundColor(.blue)
-                                }
-                            }
-                            .accessibilityIdentifier("game\(manager.gameIndex(game))")
+                List {
+                    ForEach(manager.allGames) { game in
+                        NavigationLink(destination: BlankView()) {
+                            GameCell(game: game)
                         }
-                        .onDelete(perform: deleteGame)
+                        .accessibilityIdentifier("game\(manager.gameIndex(game))")
+                        
                     }
-                    .listStyle(GroupedListStyle())
-                    .accessibility(identifier: "gameList")
+                    .onDelete(perform: deleteGame)
                 }
+                .listStyle(GroupedListStyle())
             }
             .navigationTitle(Text("Games"))
             .navigationBarItems(trailing:
@@ -83,6 +61,31 @@ struct ContentView: View {
         }
     }
 }
+
+struct GameCell: View {
+    let game: Game
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(game.formattedDate())
+                .font(.subheadline)
+                .foregroundColor(.gray)
+            HStack {
+                Text(game.awayTeamName)
+                    .font(.headline)
+                Text(" vs. ").foregroundColor(.red)
+                Text(game.homeTeamName)
+                    .font(.headline)
+            }
+            .padding(.vertical, 1)
+            .accessibility(identifier: "HEY")
+            Text(game.stringStatus())
+                .font(.subheadline)
+                .foregroundColor(.blue)
+        }
+    }
+}
+
 
 struct BlankView: View {
     var body: some View {
