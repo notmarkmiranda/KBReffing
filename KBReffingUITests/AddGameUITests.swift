@@ -57,13 +57,15 @@ class AddGameUITests: XCTestCase {
                 
         goButton.tap()
         
-        let blankViewText = app.staticTexts["howdy"]
+        let awayTeamText = app.staticTexts["awayTeamName"]
+        let homeTeamText = app.staticTexts["homeTeamName"]
         let exp = expectation(description: "Test after 5 seconds")
         let result = XCTWaiter.wait(for: [exp], timeout: 2.0)
         if result == XCTWaiter.Result.timedOut {
-        
-            XCTAssert(blankViewText.exists)
-            XCTAssertEqual(blankViewText.label, "hello")
+            XCTAssert(awayTeamText.exists)
+            XCTAssertEqual(awayTeamText.label, "Dinosaurs")
+            XCTAssert(homeTeamText.exists)
+            XCTAssertEqual(homeTeamText.label, "Lot lizards")
         } else {
             XCTFail("Delay interrupted")
         }
