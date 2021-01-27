@@ -22,9 +22,7 @@ struct ContentView: View {
                     EmptyView()
                 }.hidden()
                 List {
-                    ForEach(0..<manager.allGames.count) { index in
-                        let game = manager.allGames[index]
-                        
+                    ForEach(manager.allGames) { game in
                         NavigationLink(destination: BlankView()) {
                             GameCell(game: game)
                         }
@@ -33,6 +31,7 @@ struct ContentView: View {
                     }
                     .onDelete(perform: deleteGame)
                 }
+                .listStyle(GroupedListStyle())
             }
             .navigationTitle(Text("Games"))
             .navigationBarItems(trailing:
