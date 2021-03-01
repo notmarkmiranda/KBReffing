@@ -12,20 +12,21 @@ struct ContentView: View {
     
     @State private var showAddGame = false
     @State private var hasNewGame = false
-    @State private var selectedGame: Game? = nil
+    
     
     let df = DateFormatter()
     
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: GameDetailScoring(game: manager.selectedGame), isActive: $hasNewGame) {
-                    EmptyView()
-                }.hidden()
-                
+                if manager.selectedGame != nil {
+                    NavigationLink(destination: GameDetailScoring(game: manager.selectedGame!, currentStats: manager.currentStats), isActive: $hasNewGame) {
+                        EmptyView()
+                    }.hidden()
+                }
                 List {
                     ForEach(manager.allGames) { game in
-                        NavigationLink(destination: GameDetailScoring(game: game)) {
+                        NavigationLink(destination: GameDetailScoring(game: game, currentStats: manager.currentStats)) {
                             GameCell(game: game)
                         }
                         .accessibilityIdentifier("game\(manager.gameIndex(game))")
@@ -46,7 +47,6 @@ struct ContentView: View {
             .sheet(isPresented: self.$showAddGame) {
                 AddGame(hasNewGame: self.$hasNewGame, manager: manager)
             }
-            
         }.onAppear { loadGames() }
     }
     
