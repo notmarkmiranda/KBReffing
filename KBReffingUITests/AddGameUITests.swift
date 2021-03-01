@@ -63,9 +63,9 @@ class AddGameUITests: XCTestCase {
         let result = XCTWaiter.wait(for: [exp], timeout: 2.0)
         if result == XCTWaiter.Result.timedOut {
             XCTAssert(awayTeamText.exists)
-            XCTAssertEqual(awayTeamText.label, "Dinosaurs")
+            XCTAssertEqual(awayTeamText.label, "DINOSAURS")
             XCTAssert(homeTeamText.exists)
-            XCTAssertEqual(homeTeamText.label, "Lot lizards")
+            XCTAssertEqual(homeTeamText.label, "LOT LIZARDS")
         } else {
             XCTFail("Delay interrupted")
         }

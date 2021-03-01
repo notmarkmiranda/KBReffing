@@ -15,6 +15,17 @@ struct Game: Identifiable, Codable, Equatable {
     var status: GameStatus = GameStatus.notStarted
     var numbersDictionary: [String: Int]
     var booleanDictionary: [String: Bool]
+    var currentStats: [String: Int]?
+    
+    var stateArray: [[String: Int]] = []
+    
+    static func == (lhs: Game, rhs: Game) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func combineStrikesFouls() -> Bool {
+        return booleanDictionary["combineStrikesFouls"] == true
+    }
     
     func formattedDate() -> String {
         let df = DateFormatter()
@@ -39,6 +50,10 @@ struct Game: Identifiable, Codable, Equatable {
         } else {
             return 99
         }
+    }
+    
+    func halfInning(_ topOrBottom: Int) -> String {
+        topOrBottom % 2 == 0 ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill"
     }
     
     #if DEBUG

@@ -10,7 +10,8 @@ import Foundation
 class Manager: ObservableObject {
     @Published var allGames: [Game] = []
     @Published var selectedGame: Game?
-    
+    @Published var currentStats: [String: Int] = ["inning": 1, "topOrBottom": 0, "strikes": 0, "fouls": 0, "balls": 0, "outs": 0, "awayScore": 0, "homeScore": 0]
+
     let defaults = UserDefaults.standard
     
     func addGame(_ game: Game) {
