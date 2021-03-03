@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var manager = Manager()
+    @ObservedObject var manager = Manager()
     
     @State private var showAddGame = false
     @State private var hasNewGame = false
@@ -20,13 +20,13 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 if manager.selectedGame != nil {
-                    NavigationLink(destination: GameDetailScoring(game: manager.selectedGame!, currentStats: manager.currentStats), isActive: $hasNewGame) {
+                    NavigationLink(destination: GameDetailScoring(manager: manager, game: manager.selectedGame!), isActive: $hasNewGame) {
                         EmptyView()
                     }.hidden()
                 }
                 List {
                     ForEach(manager.allGames) { game in
-                        NavigationLink(destination: GameDetailScoring(game: game, currentStats: manager.currentStats)) {
+                        NavigationLink(destination: GameDetailScoring(manager: manager, game: game)) {
                             GameCell(game: game)
                         }
                         .accessibilityIdentifier("game\(manager.gameIndex(game))")
@@ -45,7 +45,7 @@ struct ContentView: View {
                                     })
             )
             .sheet(isPresented: self.$showAddGame) {
-                AddGame(hasNewGame: self.$hasNewGame, manager: manager)
+                AddGame(manager: manager, hasNewGame: self.$hasNewGame)
             }
         }.onAppear { loadGames() }
     }
