@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var manager = Manager()
+    @StateObject var manager = Manager()
     
     @State private var showAddGame = false
     @State private var hasNewGame = false
