@@ -10,15 +10,25 @@ import Foundation
 class Manager: ObservableObject {
     @Published var allGames: [Game] = []
     @Published var selectedGame: Game?
-    @Published var currentStats = [String: Int]()
+    
+    // This is what currentStats looks like on initialization
     // ["inning": 1, "topOrBottom": 0, "strikes": 0, "fouls": 0, "balls": 0, "outs": 0, "awayScore": 0, "homeScore": 0]
+    var currentStats: [String: Int] {
+        get {
+            self.statState[currentIndex]
+        }
+    }
+    @Published var currentIndex = 0
+    @Published var statState = [["inning": 1, "topOrBottom": 0, "strikes": 0, "fouls": 0, "balls": 0, "outs": 0, "awayScore": 0, "homeScore": 0]]
+    
     
     let defaults = UserDefaults.standard
 
     func addGame(_ game: Game) -> Void {
         self.allGames.append(game)
         self.selectedGame = game
-        self.currentStats = ["inning": 1, "topOrBottom": 0, "strikes": 0, "fouls": 0, "balls": 0, "outs": 0, "awayScore": 0, "homeScore": 0]
+        let initialStats = ["inning": 1, "topOrBottom": 0, "strikes": 0, "fouls": 0, "balls": 0, "outs": 0, "awayScore": 0, "homeScore": 0]
+        self.statState.insert(initialStats, at: 0)
         setDefaults()
     }
 
@@ -50,9 +60,12 @@ class Manager: ObservableObject {
         case "run":
             scoreRun()
         default:
-            currentStats[stat]! += 1
+            var statCopy = currentStats
+            statCopy[stat]! += 1
+            statState.insert(statCopy, at: 0)
         }
     }
+    
 
     func removeGame(at offsets: IndexSet) -> Void {
         allGames.remove(atOffsets: offsets)
@@ -69,13 +82,15 @@ class Manager: ObservableObject {
     }
     
     func setStats(_ stats: [String: Int]) -> Void {
-        currentStats = stats
+        statState.insert(stats, at: 0)
         selectedGame?.currentStats = stats
     }
     
     private func setStat(_ stat: String) -> Int {
         let newStat = baseStat(stat)
-        currentStats[stat] = newStat
+        copyAndInsert(stat: stat) { statCopy, stat in
+            statCopy[stat] = newStat
+        }
         return newStat
     }
     
@@ -104,7 +119,9 @@ class Manager: ObservableObject {
             if (findStat("fouls") + findStat("strikes") + 1) == game.numbersDictionary["strikesFoulsPerOut"]! {
                 addOut()
             } else {
-                currentStats[stat]!  += 1
+                copyAndInsert(stat: stat) { statCopy, stat in
+                    increment(statCopy: &statCopy, stat: stat)
+                }
             }
         }
     }
@@ -113,7 +130,9 @@ class Manager: ObservableObject {
         if currentStats["balls"]! + 1 == game.numbersDictionary["ballsPerWalk"]! {
             resetFoulsStrikesBalls()
         } else {
-            currentStats[stat]! += 1
+            copyAndInsert(stat: stat) { statCopy, stat in
+                increment(statCopy: &statCopy, stat: stat)
+            }
         }
     }
     
@@ -125,27 +144,60 @@ class Manager: ObservableObject {
     }
     
     private func scoreRun(_ team: String) -> Void {
-        currentStats[team]! += 1
+        // #4
+        copyAndInsert(stat: team) { statCopy, stat in
+            increment(statCopy: &statCopy, stat: stat)
+        }
+    }
+    
+    private func copyStats() -> [String: Int] {
+        let statCopy = currentStats
+        return statCopy
     }
     
     private func addOut() -> Void {
         resetFoulsStrikesBalls()
         if (currentStats["outs"]! + 1) == selectedGame!.numbersDictionary["outsPerInning"]! {
             if currentStats["topOrBottom"]! % 2 == 0 {
-                currentStats["topOrBottom"]! += 1
+                copyAndInsert(stat: "topOrBottom") { statCopy, stat in
+                    increment(statCopy: &statCopy, stat: stat)
+                }
             } else {
-                currentStats["topOrBottom"]! += 1
-                currentStats["inning"]! += 1
+                copyAndInsert(stat: "") { statCopy, _ in
+                    increment(statCopy: &statCopy, stat: "topOrBottom")
+                    increment(statCopy: &statCopy, stat: "inning")
+                }
             }
-            currentStats["outs"]! = 0
+            copyAndInsert(stat: "outs") { statCopy, stat in
+                setToZero(statCopy: &statCopy, stat: stat)
+            }
+
         } else {
-            currentStats["outs"]! += 1
+            copyAndInsert(stat: "outs") { statCopy, stat in
+                increment(statCopy: &statCopy, stat: stat)
+            }
         }
     }
     
     private func resetFoulsStrikesBalls() -> Void {
-        currentStats["fouls"] = 0
-        currentStats["strikes"] = 0
-        currentStats["balls"] = 0
+        copyAndInsert(stat: "") { statCopy, _ in
+            setToZero(statCopy: &statCopy, stat: "fouls")
+            setToZero(statCopy: &statCopy, stat: "strikes")
+            setToZero(statCopy: &statCopy, stat: "balls")
+        }
+    }
+    
+    private func copyAndInsert(stat: String, completion: (inout [String: Int], String) -> Void) -> Void {
+        var statCopy = copyStats()
+        completion(&statCopy, stat)
+        statState.insert(statCopy, at: 0)
+    }
+    
+    private func setToZero(statCopy: inout [String: Int], stat: String) -> Void {
+        statCopy[stat]! = 0
+    }
+    
+    private func increment(statCopy: inout [String: Int], stat: String) -> Void {
+        statCopy[stat]! += 1
     }
 }
