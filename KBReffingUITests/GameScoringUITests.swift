@@ -246,4 +246,22 @@ class GameScoringUITests: XCTestCase {
         
         XCTAssertEqual(homeTeamScore.label, "1")
     }
+    
+    func testUndo() throws {
+        let strikeButton = app.buttons["strikeButton"]
+        strikeButton.tap()
+        
+        let strikeStat = app.staticTexts["strikeFoulStat"]
+        
+        XCTAssertEqual(strikeStat.label, "1")
+        
+        let undoButton = app.buttons["undoButton"]
+        undoButton.tap()
+        
+        XCTAssertEqual(strikeStat.label, "0")
+        
+        // second button press to check if app crashes or not
+        undoButton.tap()
+        XCTAssertEqual(strikeStat.label, "0")
+    }
 }

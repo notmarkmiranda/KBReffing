@@ -86,25 +86,25 @@ struct GameDetailScoring: View {
                 Divider()
                 HStack {
                     VStack {
-                        StatButton(label: "out", callback: incrementStat)
+                        StatButton(label: "out", callback: onClick)
                             .frame(maxWidth: geometry.size.width * 0.45, maxHeight: .infinity)
-                        StatButton(label: "foul", callback: incrementStat)
+                        StatButton(label: "foul", callback: onClick)
                             .frame(maxWidth: geometry.size.width * 0.45, maxHeight: .infinity)
-                        StatButton(label: "ball", callback: incrementStat)
+                        StatButton(label: "ball", callback: onClick)
                             .frame(maxWidth: geometry.size.width * 0.45, maxHeight: .infinity)
-                        StatButton(label: "strike", callback: incrementStat)
+                        StatButton(label: "strike", callback: onClick)
                             .frame(maxWidth: geometry.size.width * 0.45, maxHeight: .infinity)
                     }
                     .frame(minWidth: 0, maxWidth: .infinity)
                     
                     VStack {
-                        StatButton(label: "UNDO", callback: incrementStat)
+                        StatButton(label: "undo", callback: onClick)
                             .frame(maxWidth: geometry.size.width * 0.45, maxHeight: .infinity)
-                        StatButton(label: "REDO", callback: incrementStat)
+                        StatButton(label: "redo", callback: onClick)
                             .frame(maxWidth: geometry.size.width * 0.45, maxHeight: .infinity)
-                        StatButton(label: "run", callback: incrementStat)
+                        StatButton(label: "run", callback: onClick)
                             .frame(maxWidth: geometry.size.width * 0.45, maxHeight: .infinity)
-                        StatButton(label: "safe", callback: incrementStat)
+                        StatButton(label: "safe", callback: onClick)
                             .frame(minWidth: geometry.size.width * 0.45, maxHeight: .infinity)
                     }
                     .frame(minWidth: 0, maxWidth: .infinity)
@@ -125,8 +125,8 @@ struct GameDetailScoring: View {
         }.onAppear { setSelectedGame() }
     }
     
-    private func incrementStat(_ stat: String) -> Void {
-        manager.incrementStat(stat)
+    private func onClick(_ stat: String) -> Void {
+        manager.buttonClick(stat)
     }
     
     private func setSelectedGame() -> Void {
