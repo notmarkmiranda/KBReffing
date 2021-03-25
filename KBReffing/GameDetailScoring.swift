@@ -98,9 +98,9 @@ struct GameDetailScoring: View {
                     .frame(minWidth: 0, maxWidth: .infinity)
                     
                     VStack {
-                        StatButton(label: "undo", callback: onClick)
+                        StatButton(label: "undo", disabled: disableUndo(), callback: onClick)
                             .frame(maxWidth: geometry.size.width * 0.45, maxHeight: .infinity)
-                        StatButton(label: "redo", callback: onClick)
+                        StatButton(label: "redo", disabled: disableRedo(), callback: onClick)
                             .frame(maxWidth: geometry.size.width * 0.45, maxHeight: .infinity)
                         StatButton(label: "run", callback: onClick)
                             .frame(maxWidth: geometry.size.width * 0.45, maxHeight: .infinity)
@@ -137,6 +137,14 @@ struct GameDetailScoring: View {
             manager.statState = [stats]
         }
     }
+    
+    private func disableUndo() -> Bool {
+        return manager.disableUndo()
+    }
+    
+    private func disableRedo() -> Bool {
+        return manager.disableRedo()
+    }
 }
 
 struct CountRow: View {
@@ -157,7 +165,9 @@ struct CountRow: View {
 
 struct StatButton: View {
     let label: String
+    var disabled: Bool = false
     let callback: (String) -> Void
+    
     
     var body: some View {
         Button(action: {
@@ -171,6 +181,7 @@ struct StatButton: View {
         .padding()
         .background(Color.accentColor)
         .cornerRadius(8)
+        .disabled(disabled)
     }
 }
 

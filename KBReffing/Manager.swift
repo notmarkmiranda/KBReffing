@@ -101,6 +101,14 @@ class Manager: ObservableObject {
         selectedGame?.currentStats = stats
     }
     
+    func disableUndo() -> Bool {
+        return currentIndex + 1 == statState.count
+    }
+    
+    func disableRedo() -> Bool {
+        return currentIndex == 0
+    }
+    
     // ---------------------------
     //   MARK: - PRIVATE METHODS
     // ---------------------------

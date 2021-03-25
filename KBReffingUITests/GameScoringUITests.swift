@@ -353,4 +353,26 @@ class GameScoringUITests: XCTestCase {
 //        
 //        XCTAssertEqual(outStat.label, "2")
 //    }
+    
+    func testDisabledUndoButtonWhenNoUndoIsPossible() throws {
+        let undoButton = app.buttons["undoButton"]
+        XCTAssertEqual(undoButton.isEnabled, false)
+        
+        let outButton = app.buttons["outButton"]
+        outButton.tap()
+        
+        XCTAssertEqual(undoButton.isEnabled, true)
+    }
+    
+    func testDisabledRedoButtonWhenNoRedoIsPossible() throws {
+        let redoButton = app.buttons["redoButton"]
+        XCTAssertEqual(redoButton.isEnabled, false)
+        
+        let outButton = app.buttons["outButton"]
+        let undoButton = app.buttons["undoButton"]
+        outButton.tap()
+        undoButton.tap()
+        
+        XCTAssertEqual(redoButton.isEnabled, true)
+    }
 }
