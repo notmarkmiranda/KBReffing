@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B406CEC3260046A7002D3EF5 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B448001825FD2BB800D7CEC5 /* Tracker.swift */; };
 		B413931E25AFF46500ED544E /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B413931D25AFF46500ED544E /* GameTests.swift */; };
 		B4168BCC25ABFC300061B52D /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4168BCB25ABFC300061B52D /* Manager.swift */; };
 		B420BC4F256CB3E7005E39A9 /* AddGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B420BC4E256CB3E7005E39A9 /* AddGame.swift */; };
@@ -46,6 +47,7 @@
 		B4168BCB25ABFC300061B52D /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		B420BC4E256CB3E7005E39A9 /* AddGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGame.swift; sourceTree = "<group>"; };
 		B42B176D25C107C000F64977 /* GameDetailScoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailScoring.swift; sourceTree = "<group>"; };
+		B448001825FD2BB800D7CEC5 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		B465192E25C4C39100A2E405 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		B465193625C4C8EC00A2E405 /* GameScoringUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScoringUITests.swift; sourceTree = "<group>"; };
 		B4941FBB256C6E8200ED6DC5 /* KBReffing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KBReffing.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,6 +115,7 @@
 		B4941FBD256C6E8200ED6DC5 /* KBReffing */ = {
 			isa = PBXGroup;
 			children = (
+				B448001825FD2BB800D7CEC5 /* Tracker.swift */,
 				B465192E25C4C39100A2E405 /* GameState.swift */,
 				B4168BCB25ABFC300061B52D /* Manager.swift */,
 				B4941FEC256C84A400ED6DC5 /* Game.swift */,
@@ -288,6 +291,7 @@
 			files = (
 				B465192F25C4C39100A2E405 /* GameState.swift in Sources */,
 				B4941FC1256C6E8200ED6DC5 /* ContentView.swift in Sources */,
+				B406CEC3260046A7002D3EF5 /* Tracker.swift in Sources */,
 				B4941FED256C84A400ED6DC5 /* Game.swift in Sources */,
 				B42B176E25C107C000F64977 /* GameDetailScoring.swift in Sources */,
 				B4941FBF256C6E8200ED6DC5 /* KBReffingApp.swift in Sources */,

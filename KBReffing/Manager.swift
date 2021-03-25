@@ -7,22 +7,42 @@
 
 import Foundation
 
+
 class Manager: ObservableObject {
+    // ----------------------
+    //   MARK: - PROPERTIES
+    // ----------------------
     @Published var allGames: [Game] = []
-    @Published var selectedGame: Game?
-    
-    // This is what currentStats looks like on initialization
-    // ["inning": 1, "topOrBottom": 0, "strikes": 0, "fouls": 0, "balls": 0, "outs": 0, "awayScore": 0, "homeScore": 0]
-    var currentStats: [String: Int] {
-        get { self.statState[currentIndex] }
+    @Published var selectedGame: Game? {
+        didSet {
+            if selectedGame!.currentStats == nil {
+                selectedGame!.currentStats = currentStats
+            }
+            // SOMETHING GOES HERE TO OVERWRITE
+        }
     }
     @Published var currentIndex = 0
     @Published var statState = [["inning": 1, "topOrBottom": 0, "strikes": 0, "fouls": 0, "balls": 0, "outs": 0, "awayScore": 0, "homeScore": 0]]
-    // stack?
     
+    var currentStats: [String: Int] {
+        get { self.statState[currentIndex] }
+    }
     
     let defaults = UserDefaults.standard
+    private let tracker: Tracker?
 
+    // --------------------------------------------
+    //   MARK: - Initializer, tracker for testing
+    // --------------------------------------------
+    
+    init(tracker: Tracker? = nil) {
+        self.tracker = tracker
+    }
+    
+    // ---------------------
+    //   MARK: - FUNCTIONS
+    // ---------------------
+    
     func addGame(_ game: Game) -> Void {
         self.allGames.append(game)
         self.selectedGame = game
@@ -47,27 +67,18 @@ class Manager: ObservableObject {
         let conversion = ["out": "outs", "strike": "strikes", "foul": "fouls", "ball": "balls", "safe": "safe", "run": "run", "undo": "undo", "redo": "redo"]
         guard let stat = conversion[stat], let game = selectedGame else { return }
 
-        let statCopy = doWork(stat, game)
-        statState.insert(statCopy, at: 0)
-    }
-    
-    private func doWork(_ stat: String, _ game: Game) -> [String: Int] {
         switch stat {
-        case "fouls", "strikes":
-            return foulOrStrike(stat, game: game)
-        case "balls":
-            return addBalls(stat, game: game)
-        case "outs":
-            return addOut()
-        case "safe":
-            return resetFoulsStrikesBalls()
-        case "run":
-            return scoreRun()
-//        case "undo", "redo":
-//            return undoOrRedo(stat)
+        case "undo", "redo":
+            undoOrRedo(stat)
         default:
-            return currentStats
+            if currentIndex != 0 {
+                resetStatState()
+            }
+            let statCopy = statChange(stat, game)
+            statState.insert(statCopy, at: 0)
         }
+        setCurrentStatsOnGame()
+        setDefaults()
     }
 
     func removeGame(at offsets: IndexSet) -> Void {
@@ -80,6 +91,7 @@ class Manager: ObservableObject {
             let decoder = JSONDecoder()
             if let decodedGames = try? decoder.decode(Array<Game>.self, from: games) {
                 allGames = decodedGames
+                
             }
         }
     }
@@ -87,6 +99,67 @@ class Manager: ObservableObject {
     func setStats(_ stats: [String: Int]) -> Void {
         statState.insert(stats, at: 0)
         selectedGame?.currentStats = stats
+    }
+    
+    // ---------------------------
+    //   MARK: - PRIVATE METHODS
+    // ---------------------------
+    
+    private func setCurrentStatsOnGame() -> Void {
+        if selectedGame != nil, selectedGame!.currentStats != currentStats  {
+            selectedGame!.currentStats = currentStats
+            let index = gameIndex(selectedGame!)
+            guard index != 99 else { return }
+            allGames[index] = selectedGame!
+        }
+    }
+    
+    private func undoOrRedo(_ stat: String) -> Void {
+        if let tracker = tracker {
+            tracker.undoOrRedoCalled()
+        }
+        switch stat {
+        case "redo":
+            print("REDO IN UNDOORREDO")
+            print("### \(currentIndex - 1) ###")
+            guard (currentIndex - 1) >= 0 else { return }
+            print("*** \(currentIndex - 1) ***")
+            
+            currentIndex -= 1
+        case "undo":
+            guard currentIndex + 1 < statState.count else {
+                return
+            }
+            currentIndex += 1
+        default:
+            break
+        }
+    }
+    
+    private func resetStatState() -> Void {
+        if let tracker = tracker {
+            tracker.resetStatStateCalled()
+        }
+        let newStateArray = Array(statState[currentIndex...])
+        statState = newStateArray
+        currentIndex = 0
+    }
+    
+    private func statChange(_ stat: String, _ game: Game) -> [String: Int] {
+        switch stat {
+        case "fouls", "strikes":
+            return foulOrStrike(stat, game: game)
+        case "balls":
+            return addBalls(stat, game: game)
+        case "outs":
+            return addOut()
+        case "safe":
+            return resetFoulsStrikesBalls()
+        case "run":
+            return scoreRun()
+        default:
+            return currentStats
+        }
     }
     
     private func setStat(_ stat: String) -> Int {
@@ -109,10 +182,11 @@ class Manager: ObservableObject {
     
     private func setDefaults() -> Void {
         let encoder = JSONEncoder()
-        
+
         do {
             let encodedGames = try encoder.encode(allGames)
             defaults.set(encodedGames, forKey: "games")
+            try setGames()
         } catch {
             print(error)
         }
@@ -171,23 +245,6 @@ class Manager: ObservableObject {
             }
         } else {
             return copyAndInsert(stat: "outs", stats: statCopy, completion: increment(statCopy:stat:))
-        }
-    }
-    
-    private func undoOrRedo(_ stat: String) -> Void {
-        switch stat {
-        case "redo":
-            print("A")
-        case "undo":
-//            needs a guard clause against if we're at the end
-            
-            
-//            guard (currentIndex + 1) >= statState.count else { return }
-            currentIndex += 1
-            print("curIndex: \(currentIndex)")
-            print("count: \(statState.count)")
-        default:
-            break
         }
     }
     

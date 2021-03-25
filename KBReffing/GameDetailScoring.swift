@@ -122,16 +122,19 @@ struct GameDetailScoring: View {
             .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             .navigationBarTitle("", displayMode: .inline)
             .padding()
-        }.onAppear { setSelectedGame() }
+        }.onAppear { setSelectedGameAndStats() }
     }
     
     private func onClick(_ stat: String) -> Void {
         manager.buttonClick(stat)
     }
     
-    private func setSelectedGame() -> Void {
+    private func setSelectedGameAndStats() -> Void {
         if manager.selectedGame == nil {
             manager.selectedGame = game
+        }
+        if let stats = game.currentStats {
+            manager.statState = [stats]
         }
     }
 }
