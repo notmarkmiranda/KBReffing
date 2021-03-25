@@ -246,4 +246,111 @@ class GameScoringUITests: XCTestCase {
         
         XCTAssertEqual(homeTeamScore.label, "1")
     }
+    
+    func testUndo() throws {
+        let strikeButton = app.buttons["strikeButton"]
+        strikeButton.tap()
+        
+        let strikeStat = app.staticTexts["strikeFoulStat"]
+        
+        XCTAssertEqual(strikeStat.label, "1")
+        
+        let undoButton = app.buttons["undoButton"]
+        undoButton.tap()
+        
+        XCTAssertEqual(strikeStat.label, "0")
+    }
+    
+    func testUndoMoreTimesThanExists() throws {
+        let strikeButton = app.buttons["strikeButton"]
+        strikeButton.tap()
+        
+        let strikeStat = app.staticTexts["strikeFoulStat"]
+        
+        XCTAssertEqual(strikeStat.label, "1")
+        
+        let undoButton = app.buttons["undoButton"]
+        undoButton.tap()
+        
+        XCTAssertEqual(strikeStat.label, "0")
+        
+        // second button press to check if app crashes or not
+        undoButton.tap()
+        XCTAssertEqual(strikeStat.label, "0")
+    }
+    
+    func testRedo() throws {
+        let outButton = app.buttons["outButton"]
+        let undoButton = app.buttons["undoButton"]
+        let redoButton = app.buttons["redoButton"]
+        outButton.tap()
+        
+        let outStat = app.staticTexts["outStat"]
+        XCTAssertEqual(outStat.label, "1")
+        
+        undoButton.tap()
+        XCTAssertEqual(outStat.label, "0")
+        
+        redoButton.tap()
+        XCTAssertEqual(outStat.label, "1")
+    }
+    
+    func testRedoTooManyTimes() throws {
+        let outButton = app.buttons["outButton"]
+        let undoButton = app.buttons["undoButton"]
+        let redoButton = app.buttons["redoButton"]
+        outButton.tap()
+        
+        let outStat = app.staticTexts["outStat"]
+        XCTAssertEqual(outStat.label, "1")
+        
+        undoButton.tap()
+        XCTAssertEqual(outStat.label, "0")
+        
+        redoButton.tap()
+        XCTAssertEqual(outStat.label, "1")
+        
+        // second button press to check if app crashes or not
+        redoButton.tap()
+        XCTAssertEqual(outStat.label, "1")
+    }
+    
+    func testUndoAndNewStatClickRemovesRedoAbility() throws {
+        let outButton = app.buttons["outButton"]
+        let undoButton = app.buttons["undoButton"]
+        let redoButton = app.buttons["redoButton"]
+        outButton.tap()
+        
+        let outStat = app.staticTexts["outStat"]
+        XCTAssertEqual(outStat.label, "1")
+        
+        undoButton.tap()
+        XCTAssertEqual(outStat.label, "0")
+        
+        outButton.tap()
+        XCTAssertEqual(outStat.label, "1")
+        
+        redoButton.tap()
+        XCTAssertEqual(outStat.label, "1")
+        
+        outButton.tap()
+        XCTAssertEqual(outStat.label, "2")
+    }
+    
+//    func testClosingAppWithScoresCanReopenWithScores() throws {
+//        let outButton = app.buttons["outButton"]
+//        let outStat = app.staticTexts["outStat"]
+//        
+//        outButton.tap()
+//        outButton.tap()
+//        XCTAssertEqual(outStat.label, "2")
+//        sleep(1)
+//        app.terminate()
+//        app.activate()
+//        sleep(1)
+//        let gameText = app.buttons["game0"]
+//        gameText.tap()
+//        
+//        XCTAssertEqual(outStat.label, "2")
+//    }
 }

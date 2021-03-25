@@ -79,6 +79,86 @@ class ManagerTests: XCTestCase {
         XCTAssertEqual(manager.gameIndex(game), 99)
     }
     
+    func testFindStatWhenStatExists() throws {
+        XCTAssertEqual(manager.findStat("outs"), 0)
+    }
+    
+    func testFindStateWhenStatDoesNotExist() throws {
+        XCTAssertEqual(manager.findStat("superDuper"), 0)
+    }
+    
+    func testButtonClickUndoCallsUndoOrRedo() throws {
+        let tracker = Tracker()
+        let newManager = Manager(tracker: tracker)
+        newManager.selectedGame = Game.example
+        
+        newManager.buttonClick("undo")
+        XCTAssert(tracker.undoOrRedoFunctionCalled)
+    }
+    
+    func testButtonClickRedoCallsUndoOrRedo() throws {
+        let tracker = Tracker()
+        let newManager = Manager(tracker: tracker)
+        newManager.selectedGame = Game.example
+        
+        newManager.buttonClick("redo")
+        XCTAssert(tracker.undoOrRedoFunctionCalled)
+    }
+    
+    func testButtonClickWhenCurrentIndexIsZero() throws {
+        manager.selectedGame = Game.example
+        manager.allGames = [Game.example]
+        manager.currentIndex = 0
+        print(manager.statState)
+        
+        manager.buttonClick("out")
+        XCTAssertEqual(manager.statState.count, 2)
+    }
+    
+    func testButtonClickWhenCurrentIndexIsNotZero() throws {
+        let tracker = Tracker()
+        let newManager = Manager(tracker: tracker)
+        newManager.addGame(Game.example)
+        
+        let dupStats = newManager.statState[0]
+        newManager.statState = [dupStats, dupStats]
+        newManager.currentIndex = 1
+        
+        newManager.buttonClick("out")
+        XCTAssert(tracker.resetStatStateFunctionCalled)
+        XCTAssertEqual(newManager.currentIndex, 0)
+    }
+    
+    func testGameStateAlwaysMimcsCurrentStats() throws {
+        manager.selectedGame = Game.example
+        XCTAssertEqual(manager.selectedGame?.currentStats, manager.currentStats)
+        manager.buttonClick("out")
+        
+        XCTAssertEqual(manager.selectedGame?.currentStats, manager.currentStats)
+    }
+    
+    func testSelectedGameMatchesAllGames() throws {
+        manager.selectedGame = Game.example
+        manager.allGames = [Game.example]
+        manager.buttonClick("out")
+        
+        let selectedGame = manager.selectedGame
+        let gameIndex = manager.gameIndex(selectedGame!)
+        
+        XCTAssertEqual(selectedGame!.currentStats!, manager.allGames[gameIndex].currentStats)
+    }
+    
+    func testGameInDefaultsHasStatsThatMatch() throws {
+        manager.selectedGame = Game.example
+        manager.allGames = [Game.example]
+        
+        manager.buttonClick("out")
+
+        let selectedGame = manager.selectedGame
+        let games = try getGamesFromDefaults()
+        XCTAssertEqual(games[0], selectedGame)
+    }
+    
     private func getGamesFromDefaults() throws -> [Game] {
         let games = defaults.object(forKey: "games") as! Data
         return try decoder.decode(Array.self, from: games) as [Game]
