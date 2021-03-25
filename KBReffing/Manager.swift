@@ -186,7 +186,6 @@ class Manager: ObservableObject {
         do {
             let encodedGames = try encoder.encode(allGames)
             defaults.set(encodedGames, forKey: "games")
-            try setGames()
         } catch {
             print(error)
         }
