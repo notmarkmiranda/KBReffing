@@ -77,8 +77,7 @@ class Manager: ObservableObject {
             let statCopy = statChange(stat, game)
             statState.insert(statCopy, at: 0)
         }
-        setCurrentStatsOnGame()
-        setDefaults()
+        saveGame()
     }
 
     func removeGame(at offsets: IndexSet) -> Void {
@@ -109,6 +108,11 @@ class Manager: ObservableObject {
         return currentIndex == 0
     }
     
+    func saveGame() -> Void {
+        setCurrentStatsOnGame()
+        setDefaults()
+    }
+    
     // ---------------------------
     //   MARK: - PRIVATE METHODS
     // ---------------------------
@@ -128,11 +132,7 @@ class Manager: ObservableObject {
         }
         switch stat {
         case "redo":
-            print("REDO IN UNDOORREDO")
-            print("### \(currentIndex - 1) ###")
             guard (currentIndex - 1) >= 0 else { return }
-            print("*** \(currentIndex - 1) ***")
-            
             currentIndex -= 1
         case "undo":
             guard currentIndex + 1 < statState.count else {
