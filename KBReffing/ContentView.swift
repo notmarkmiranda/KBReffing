@@ -20,13 +20,13 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 if manager.selectedGame != nil {
-                    NavigationLink(destination: GameDetailScoring(manager: manager, game: manager.selectedGame!), isActive: $hasNewGame) {
+                    NavigationLink(destination: GameDetailScoring(game: manager.selectedGame!), isActive: $hasNewGame) {
                         EmptyView()
                     }.hidden()
                 }
                 List {
                     ForEach(manager.allGames) { game in
-                        NavigationLink(destination: GameDetailScoring(manager: manager, game: game)) {
+                        NavigationLink(destination: GameDetailScoring(game: game)) {
                             GameCell(game: game)
                         }
                         .accessibilityIdentifier("game\(manager.gameIndex(game))")
@@ -47,7 +47,9 @@ struct ContentView: View {
             .sheet(isPresented: self.$showAddGame) {
                 AddGame(manager: manager, hasNewGame: self.$hasNewGame)
             }
-        }.onAppear { loadGames() }
+        }
+        .onAppear { loadGames() }
+        .environmentObject(manager)
     }
     
     func deleteGame(at offsets: IndexSet) {
@@ -57,7 +59,6 @@ struct ContentView: View {
     func loadGames() {
         do {
             try manager.setGames()
-            print("YO: \(manager.allGames)")
         } catch {
             print(error)
         }

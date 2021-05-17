@@ -18,5 +18,7 @@ class Tracker {
     func resetStatStateCalled() -> Void {
         resetStatStateFunctionCalled = true
     }
-    
 }
+
+
+//

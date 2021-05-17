@@ -65,7 +65,7 @@ class Manager: ObservableObject {
     
     func buttonClick(_ stat: String) -> Void {
         let conversion = ["out": "outs", "strike": "strikes", "foul": "fouls", "ball": "balls", "safe": "safe", "run": "run", "undo": "undo", "redo": "redo"]
-        guard let stat = conversion[stat], let game = selectedGame else { return }
+        guard var stat = conversion[stat], let game = selectedGame else { return }
 
         switch stat {
         case "undo", "redo":
@@ -74,11 +74,15 @@ class Manager: ObservableObject {
             if currentIndex != 0 {
                 resetStatState()
             }
+            
+            if game.combineStrikesFouls() == true && stat == "fouls" {
+                stat = "strikes"
+            }
+            
             let statCopy = statChange(stat, game)
             statState.insert(statCopy, at: 0)
         }
-        setCurrentStatsOnGame()
-        setDefaults()
+        saveGame()
     }
 
     func removeGame(at offsets: IndexSet) -> Void {
@@ -109,6 +113,11 @@ class Manager: ObservableObject {
         return currentIndex == 0
     }
     
+    func saveGame() -> Void {
+        setCurrentStatsOnGame()
+        setDefaults()
+    }
+    
     // ---------------------------
     //   MARK: - PRIVATE METHODS
     // ---------------------------
@@ -128,11 +137,7 @@ class Manager: ObservableObject {
         }
         switch stat {
         case "redo":
-            print("REDO IN UNDOORREDO")
-            print("### \(currentIndex - 1) ###")
             guard (currentIndex - 1) >= 0 else { return }
-            print("*** \(currentIndex - 1) ***")
-            
             currentIndex -= 1
         case "undo":
             guard currentIndex + 1 < statState.count else {
