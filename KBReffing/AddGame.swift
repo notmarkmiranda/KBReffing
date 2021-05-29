@@ -109,7 +109,7 @@ struct AddGame: View {
                         }
                         Stepper(value: $ballsPerWalk, in: 1...6) {
                             Text("Balls per walk: \(ballsPerWalk)")
-                        }
+                        }.accessibility(identifier: "bpw")
                         
                     }
                     

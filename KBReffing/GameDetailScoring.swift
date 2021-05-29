@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct GameDetailScoring: View {
-    @ObservedObject var manager: Manager
+    @EnvironmentObject var manager: Manager
     @State var game: Game
+    
+    @State private var showEditStats = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -65,7 +67,14 @@ struct GameDetailScoring: View {
                                 CountRow(countLabel: "Fouls", countStat: 3, identifier: "foul")
                             }
                             CountRow(countLabel: "Outs", countStat: manager.findStat("outs"), identifier: "out")
-                        }
+                        }.padding(.bottom)
+                        Button(action: {
+                            self.showEditStats = true
+                        }, label: {
+                            Text("Edit Stats")
+                        })
+                        .accessibility(identifier: "editStatsButton")
+                        
                     }
                     .frame(minWidth: 0, maxWidth: geometry.size.width * 0.7)
                     
@@ -122,6 +131,9 @@ struct GameDetailScoring: View {
             .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             .navigationBarTitle("", displayMode: .inline)
             .padding()
+            .sheet(isPresented: self.$showEditStats) {
+                EditStats(showEditStats: $showEditStats)
+            }
         }.onAppear { setSelectedGameAndStats() }
     }
     
@@ -189,6 +201,6 @@ struct GameDetailScoring_Previews: PreviewProvider {
     @State static var manager = Manager()
     
     static var previews: some View {
-        GameDetailScoring(manager: manager, game: Game.example)
+        GameDetailScoring(game: Game.example).environmentObject(manager)
     }
 }

@@ -76,6 +76,7 @@ class ManagerTests: XCTestCase {
     }
     
     func testGameIndexWhenItDoesNotExist() throws {
+        // should this error out instead?
         XCTAssertEqual(manager.gameIndex(game), 99)
     }
     

@@ -26,7 +26,7 @@ class AddGameUITests: XCTestCase {
         
         let goButton = app.buttons["goButton"]
         XCTAssertEqual(goButton.isEnabled, false)
-        
+        sleep(10)
         let awayTeamField = app.textFields["awayTeamField"]
         awayTeamField.tap()
         sleep(1)

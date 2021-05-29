@@ -123,7 +123,7 @@ class GameScoringUITests: XCTestCase {
     func testTooManyOutsIncrementsInnings() throws {
         let topHalfImage = app.images["halfInningStat"]
         let inningStat = app.staticTexts["inningStat"]
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.up.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Up")
         XCTAssertEqual(inningStat.label, "1")
         
         let outButton = app.buttons["outButton"]
@@ -131,21 +131,21 @@ class GameScoringUITests: XCTestCase {
         outButton.tap()
         outButton.tap()
         
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.down.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Down")
         XCTAssertEqual(inningStat.label, "1")
         
         outButton.tap()
         outButton.tap()
         outButton.tap()
         
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.up.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Up")
         XCTAssertEqual(inningStat.label, "2")
     }
     
     func testLastOutCausedByStrikesIncrementsInnings() throws {
         let topHalfImage = app.images["halfInningStat"]
         let inningStat = app.staticTexts["inningStat"]
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.up.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Up")
         XCTAssertEqual(inningStat.label, "1")
         
         let outButton = app.buttons["outButton"]
@@ -163,7 +163,7 @@ class GameScoringUITests: XCTestCase {
         strikeButton.tap()
         
         XCTAssertEqual(outStat.label, "0")
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.down.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Down")
         XCTAssertEqual(inningStat.label, "1")
         
         outButton.tap()
@@ -176,7 +176,7 @@ class GameScoringUITests: XCTestCase {
         strikeButton.tap()
         strikeButton.tap()
         strikeButton.tap()
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.up.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Up")
         XCTAssertEqual(inningStat.label, "2")
     }
     

@@ -23,6 +23,8 @@
 		B4941FED256C84A400ED6DC5 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4941FEC256C84A400ED6DC5 /* Game.swift */; };
 		B49DD0E025BB5694007873BF /* AddGameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49DD0DF25BB5694007873BF /* AddGameUITests.swift */; };
 		B4A3380B25B5ECAA00A304B8 /* ManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A3380A25B5ECAA00A304B8 /* ManagerTests.swift */; };
+		B4D4623E26253A14005B5674 /* EditStatsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D4623D26253A14005B5674 /* EditStatsUITests.swift */; };
+		B4D4624626261319005B5674 /* EditStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D4624526261319005B5674 /* EditStats.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +67,8 @@
 		B4941FEC256C84A400ED6DC5 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		B49DD0DF25BB5694007873BF /* AddGameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameUITests.swift; sourceTree = "<group>"; };
 		B4A3380A25B5ECAA00A304B8 /* ManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerTests.swift; sourceTree = "<group>"; };
+		B4D4623D26253A14005B5674 /* EditStatsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStatsUITests.swift; sourceTree = "<group>"; };
+		B4D4624526261319005B5674 /* EditStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStats.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +130,7 @@
 				B4941FC2256C6E8400ED6DC5 /* Assets.xcassets */,
 				B4941FC7256C6E8400ED6DC5 /* Info.plist */,
 				B4941FC4256C6E8400ED6DC5 /* Preview Content */,
+				B4D4624526261319005B5674 /* EditStats.swift */,
 			);
 			path = KBReffing;
 			sourceTree = "<group>";
@@ -156,6 +161,7 @@
 				B4941FDD256C6E8400ED6DC5 /* Info.plist */,
 				B49DD0DF25BB5694007873BF /* AddGameUITests.swift */,
 				B465193625C4C8EC00A2E405 /* GameScoringUITests.swift */,
+				B4D4623D26253A14005B5674 /* EditStatsUITests.swift */,
 			);
 			path = KBReffingUITests;
 			sourceTree = "<group>";
@@ -290,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B465192F25C4C39100A2E405 /* GameState.swift in Sources */,
+				B4D4624626261319005B5674 /* EditStats.swift in Sources */,
 				B4941FC1256C6E8200ED6DC5 /* ContentView.swift in Sources */,
 				B406CEC3260046A7002D3EF5 /* Tracker.swift in Sources */,
 				B4941FED256C84A400ED6DC5 /* Game.swift in Sources */,
@@ -315,6 +322,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B465193725C4C8EC00A2E405 /* GameScoringUITests.swift in Sources */,
+				B4D4623E26253A14005B5674 /* EditStatsUITests.swift in Sources */,
 				B4941FDC256C6E8400ED6DC5 /* KBReffingUITests.swift in Sources */,
 				B49DD0E025BB5694007873BF /* AddGameUITests.swift in Sources */,
 			);
