@@ -75,8 +75,8 @@ struct EditStats: View {
         var newStats = manager.currentStats
         newStats["inning"] = inning
         newStats["topOrBottom"] = topOrBottom
-        newStats["strikes"] = strikes
-        
+        newStats["strikes"] = strikesAndFouls
+        print("HOWDY: \(strikes)")
         manager.setStats(newStats)
         manager.saveGame()
     }

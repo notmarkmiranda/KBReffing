@@ -96,6 +96,7 @@ class Manager: ObservableObject {
     }
     
     func setStats(_ stats: [String: Int]) -> Void {
+        print("HERE: \(stats)")
         statState.insert(stats, at: 0)
         selectedGame?.currentStats = stats
     }

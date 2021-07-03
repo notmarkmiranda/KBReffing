@@ -21,7 +21,7 @@ class AddGameUITests: XCTestCase {
         app.launchArguments += ["-games", "nil"]
         app.launch()
         
-        let addGameButton = app.navigationBars.buttons["plus"]
+        let addGameButton = app.navigationBars.buttons["add"]
         addGameButton.tap()
         
         let goButton = app.buttons["goButton"]
