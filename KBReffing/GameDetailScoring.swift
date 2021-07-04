@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GameDetailScoring: View {
     @EnvironmentObject var manager: Manager
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var game: Game
     
     @State private var showEditStats = false
@@ -130,6 +131,17 @@ struct GameDetailScoring: View {
             )
             .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             .navigationBarTitle("", displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(
+                leading: Button(
+                    action: {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                ) {
+                    Text("BACK")
+                }
+                .accessibility(identifier: "backButton")
+            )
             .padding()
             .sheet(isPresented: self.$showEditStats) {
                 EditStats(showEditStats: $showEditStats)
@@ -142,12 +154,10 @@ struct GameDetailScoring: View {
     }
     
     private func setSelectedGameAndStats() -> Void {
-        if manager.selectedGame == nil {
-            manager.selectedGame = game
-        }
-        if let stats = game.currentStats {
-            manager.statState = [stats]
-        }
+        manager.selectedGame = game
+        let startingStats = ["inning": 1, "topOrBottom": 0, "strikes": 0, "fouls": 0, "balls": 0, "outs": 0, "awayScore": 0, "homeScore": 0]
+        let stats = game.currentStats ?? startingStats
+        manager.statState = [stats]
     }
     
     private func disableUndo() -> Bool {

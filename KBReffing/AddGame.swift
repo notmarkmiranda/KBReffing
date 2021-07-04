@@ -127,6 +127,7 @@ struct AddGame: View {
                     Button(action: {
                         let game = buildGame()
                         manager.addGame(game)
+                        manager.selectedGame = game
                         self.hasNewGame = true
                         self.presentationMode.wrappedValue.dismiss()
                     }, label: {

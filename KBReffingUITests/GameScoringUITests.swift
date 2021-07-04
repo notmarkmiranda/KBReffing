@@ -391,4 +391,70 @@ class GameScoringUITests: XCTestCase {
         
         XCTAssertEqual(redoButton.isEnabled, true)
     }
+ 
+    func testChangingGamesAndCheckingNewStats() throws {
+        let outButton = app.buttons["outButton"]
+        sleep(1)
+        outButton.tap()
+        
+        let outStat = app.staticTexts["outStat"]
+        XCTAssertEqual(outStat.label, "1")
+        
+        let backButton = app.navigationBars.buttons["backButton"]
+        sleep(1)
+        backButton.tap()
+        
+        let addGameButton = app.navigationBars.buttons["add"]
+        sleep(1)
+        addGameButton.tap()
+        
+        let goButton = app.buttons["goButton"]
+        XCTAssertEqual(goButton.isEnabled, false)
+        sleep(1)
+        let awayTeamField = app.textFields["awayTeamField"]
+        awayTeamField.tap()
+        sleep(1)
+        app.keys["D"].tap()
+        app.keys["i"].tap()
+        app.keys["n"].tap()
+        app.keys["o"].tap()
+        app.keys["s"].tap()
+        app.keys["a"].tap()
+        app.keys["u"].tap()
+        app.keys["r"].tap()
+        app.keys["z"].tap()
+        
+        let homeTeamField = app.textFields["homeTeamField"]
+        homeTeamField.tap()
+        sleep(1)
+        app.keys["L"].tap()
+        app.keys["o"].tap()
+        app.keys["t"].tap()
+        app.keys["space"].tap()
+        app.keys["l"].tap()
+        app.keys["i"].tap()
+        app.keys["z"].tap()
+        app.keys["a"].tap()
+        app.keys["r"].tap()
+        app.keys["d"].tap()
+        app.keys["z"].tap()
+                
+        goButton.tap()
+        
+        let awayTeamText = app.staticTexts["awayTeamName"]
+        let homeTeamText = app.staticTexts["homeTeamName"]
+        let exp = expectation(description: "Test after 5 seconds")
+        let result = XCTWaiter.wait(for: [exp], timeout: 2.0)
+        if result == XCTWaiter.Result.timedOut {
+            XCTAssert(awayTeamText.exists)
+            XCTAssertEqual(awayTeamText.label, "DINOSAURZ")
+            XCTAssert(homeTeamText.exists)
+            XCTAssertEqual(homeTeamText.label, "LOT LIZARDZ")
+            
+            let outStat = app.staticTexts["outStat"]
+            XCTAssertEqual(outStat.label, "0")
+        } else {
+            XCTFail("Delay interrupted")
+        }
+    }
 }
