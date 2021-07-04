@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct GameDetailScoring: View {
-    @ObservedObject var manager: Manager
+    @EnvironmentObject var manager: Manager
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var game: Game
+    
+    @State private var showEditStats = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -65,7 +68,14 @@ struct GameDetailScoring: View {
                                 CountRow(countLabel: "Fouls", countStat: 3, identifier: "foul")
                             }
                             CountRow(countLabel: "Outs", countStat: manager.findStat("outs"), identifier: "out")
-                        }
+                        }.padding(.bottom)
+                        Button(action: {
+                            self.showEditStats = true
+                        }, label: {
+                            Text("Edit Stats")
+                        })
+                        .accessibility(identifier: "editStatsButton")
+                        
                     }
                     .frame(minWidth: 0, maxWidth: geometry.size.width * 0.7)
                     
@@ -121,7 +131,21 @@ struct GameDetailScoring: View {
             )
             .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             .navigationBarTitle("", displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(
+                leading: Button(
+                    action: {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                ) {
+                    Text("BACK")
+                }
+                .accessibility(identifier: "backButton")
+            )
             .padding()
+            .sheet(isPresented: self.$showEditStats) {
+                EditStats(showEditStats: $showEditStats)
+            }
         }.onAppear { setSelectedGameAndStats() }
     }
     
@@ -130,12 +154,10 @@ struct GameDetailScoring: View {
     }
     
     private func setSelectedGameAndStats() -> Void {
-        if manager.selectedGame == nil {
-            manager.selectedGame = game
-        }
-        if let stats = game.currentStats {
-            manager.statState = [stats]
-        }
+        manager.selectedGame = game
+        let startingStats = ["inning": 1, "topOrBottom": 0, "strikes": 0, "fouls": 0, "balls": 0, "outs": 0, "awayScore": 0, "homeScore": 0]
+        let stats = game.currentStats ?? startingStats
+        manager.statState = [stats]
     }
     
     private func disableUndo() -> Bool {
@@ -189,6 +211,6 @@ struct GameDetailScoring_Previews: PreviewProvider {
     @State static var manager = Manager()
     
     static var previews: some View {
-        GameDetailScoring(manager: manager, game: Game.example)
+        GameDetailScoring(game: Game.example).environmentObject(manager)
     }
 }

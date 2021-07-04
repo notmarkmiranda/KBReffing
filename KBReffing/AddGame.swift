@@ -109,7 +109,7 @@ struct AddGame: View {
                         }
                         Stepper(value: $ballsPerWalk, in: 1...6) {
                             Text("Balls per walk: \(ballsPerWalk)")
-                        }
+                        }.accessibility(identifier: "bpw")
                         
                     }
                     
@@ -127,6 +127,7 @@ struct AddGame: View {
                     Button(action: {
                         let game = buildGame()
                         manager.addGame(game)
+                        manager.selectedGame = game
                         self.hasNewGame = true
                         self.presentationMode.wrappedValue.dismiss()
                     }, label: {

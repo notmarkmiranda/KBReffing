@@ -21,12 +21,12 @@ class AddGameUITests: XCTestCase {
         app.launchArguments += ["-games", "nil"]
         app.launch()
         
-        let addGameButton = app.navigationBars.buttons["plus"]
+        let addGameButton = app.navigationBars.buttons["add"]
         addGameButton.tap()
         
         let goButton = app.buttons["goButton"]
         XCTAssertEqual(goButton.isEnabled, false)
-        
+        sleep(1)
         let awayTeamField = app.textFields["awayTeamField"]
         awayTeamField.tap()
         sleep(1)

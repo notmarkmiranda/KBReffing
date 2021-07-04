@@ -100,14 +100,21 @@ class GameScoringUITests: XCTestCase {
         let outStat = app.staticTexts["outStat"]
         
         strikeButton.tap()
+        sleep(1)
         strikeButton.tap()
+        sleep(1)
         strikeButton.tap()
+        sleep(1)
         strikeButton.tap()
+        sleep(1)
         strikeButton.tap()
+        sleep(1)
         strikeButton.tap()
+        sleep(1)
         ballButton.tap()
+//        sleep(1)
         
-        XCTAssertEqual(strikeFoulStat.label, "1")
+//        XCTAssertEqual(strikeFoulStat.label, "1")
         XCTAssertEqual(ballStat.label, "1")
         XCTAssertEqual(outStat.label, "1")
         
@@ -123,7 +130,7 @@ class GameScoringUITests: XCTestCase {
     func testTooManyOutsIncrementsInnings() throws {
         let topHalfImage = app.images["halfInningStat"]
         let inningStat = app.staticTexts["inningStat"]
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.up.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Up")
         XCTAssertEqual(inningStat.label, "1")
         
         let outButton = app.buttons["outButton"]
@@ -131,21 +138,21 @@ class GameScoringUITests: XCTestCase {
         outButton.tap()
         outButton.tap()
         
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.down.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Down")
         XCTAssertEqual(inningStat.label, "1")
         
         outButton.tap()
         outButton.tap()
         outButton.tap()
         
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.up.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Up")
         XCTAssertEqual(inningStat.label, "2")
     }
     
     func testLastOutCausedByStrikesIncrementsInnings() throws {
         let topHalfImage = app.images["halfInningStat"]
         let inningStat = app.staticTexts["inningStat"]
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.up.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Up")
         XCTAssertEqual(inningStat.label, "1")
         
         let outButton = app.buttons["outButton"]
@@ -163,7 +170,7 @@ class GameScoringUITests: XCTestCase {
         strikeButton.tap()
         
         XCTAssertEqual(outStat.label, "0")
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.down.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Down")
         XCTAssertEqual(inningStat.label, "1")
         
         outButton.tap()
@@ -176,7 +183,7 @@ class GameScoringUITests: XCTestCase {
         strikeButton.tap()
         strikeButton.tap()
         strikeButton.tap()
-        XCTAssertEqual(topHalfImage.label, "arrowtriangle.up.fill")
+        XCTAssertEqual(topHalfImage.label, "Triangle Arrow Up")
         XCTAssertEqual(inningStat.label, "2")
     }
     
@@ -186,7 +193,9 @@ class GameScoringUITests: XCTestCase {
         let ballButton = app.buttons["ballButton"]
         let outButton = app.buttons["outButton"]
         
+        print(outButton.debugDescription)
         outButton.tap()
+        sleep(1)
         strikeButton.tap()
         foulButton.tap()
         ballButton.tap()
@@ -216,7 +225,9 @@ class GameScoringUITests: XCTestCase {
         let strikeLabel = app.staticTexts["strikeFoulStat"]
         let outLabel = app.staticTexts["outStat"]
         
+        sleep(1)
         outButton.tap()
+        sleep(1)
         strikeButton.tap()
         XCTAssertEqual(strikeLabel.label, "1")
         XCTAssertEqual(outLabel.label, "1")
@@ -249,6 +260,7 @@ class GameScoringUITests: XCTestCase {
     
     func testUndo() throws {
         let strikeButton = app.buttons["strikeButton"]
+        sleep(1)
         strikeButton.tap()
         
         let strikeStat = app.staticTexts["strikeFoulStat"]
@@ -263,8 +275,9 @@ class GameScoringUITests: XCTestCase {
     
     func testUndoMoreTimesThanExists() throws {
         let strikeButton = app.buttons["strikeButton"]
+        sleep(1)
         strikeButton.tap()
-        
+
         let strikeStat = app.staticTexts["strikeFoulStat"]
         
         XCTAssertEqual(strikeStat.label, "1")
@@ -283,6 +296,7 @@ class GameScoringUITests: XCTestCase {
         let outButton = app.buttons["outButton"]
         let undoButton = app.buttons["undoButton"]
         let redoButton = app.buttons["redoButton"]
+        sleep(1)
         outButton.tap()
         
         let outStat = app.staticTexts["outStat"]
@@ -299,6 +313,7 @@ class GameScoringUITests: XCTestCase {
         let outButton = app.buttons["outButton"]
         let undoButton = app.buttons["undoButton"]
         let redoButton = app.buttons["redoButton"]
+        sleep(1)
         outButton.tap()
         
         let outStat = app.staticTexts["outStat"]
@@ -319,6 +334,7 @@ class GameScoringUITests: XCTestCase {
         let outButton = app.buttons["outButton"]
         let undoButton = app.buttons["undoButton"]
         let redoButton = app.buttons["redoButton"]
+        sleep(1)
         outButton.tap()
         
         let outStat = app.staticTexts["outStat"]
@@ -374,5 +390,71 @@ class GameScoringUITests: XCTestCase {
         undoButton.tap()
         
         XCTAssertEqual(redoButton.isEnabled, true)
+    }
+ 
+    func testChangingGamesAndCheckingNewStats() throws {
+        let outButton = app.buttons["outButton"]
+        sleep(1)
+        outButton.tap()
+        
+        let outStat = app.staticTexts["outStat"]
+        XCTAssertEqual(outStat.label, "1")
+        
+        let backButton = app.navigationBars.buttons["backButton"]
+        sleep(1)
+        backButton.tap()
+        
+        let addGameButton = app.navigationBars.buttons["add"]
+        sleep(1)
+        addGameButton.tap()
+        
+        let goButton = app.buttons["goButton"]
+        XCTAssertEqual(goButton.isEnabled, false)
+        sleep(1)
+        let awayTeamField = app.textFields["awayTeamField"]
+        awayTeamField.tap()
+        sleep(1)
+        app.keys["D"].tap()
+        app.keys["i"].tap()
+        app.keys["n"].tap()
+        app.keys["o"].tap()
+        app.keys["s"].tap()
+        app.keys["a"].tap()
+        app.keys["u"].tap()
+        app.keys["r"].tap()
+        app.keys["z"].tap()
+        
+        let homeTeamField = app.textFields["homeTeamField"]
+        homeTeamField.tap()
+        sleep(1)
+        app.keys["L"].tap()
+        app.keys["o"].tap()
+        app.keys["t"].tap()
+        app.keys["space"].tap()
+        app.keys["l"].tap()
+        app.keys["i"].tap()
+        app.keys["z"].tap()
+        app.keys["a"].tap()
+        app.keys["r"].tap()
+        app.keys["d"].tap()
+        app.keys["z"].tap()
+                
+        goButton.tap()
+        
+        let awayTeamText = app.staticTexts["awayTeamName"]
+        let homeTeamText = app.staticTexts["homeTeamName"]
+        let exp = expectation(description: "Test after 5 seconds")
+        let result = XCTWaiter.wait(for: [exp], timeout: 2.0)
+        if result == XCTWaiter.Result.timedOut {
+            XCTAssert(awayTeamText.exists)
+            XCTAssertEqual(awayTeamText.label, "DINOSAURZ")
+            XCTAssert(homeTeamText.exists)
+            XCTAssertEqual(homeTeamText.label, "LOT LIZARDZ")
+            
+            let outStat = app.staticTexts["outStat"]
+            XCTAssertEqual(outStat.label, "0")
+        } else {
+            XCTFail("Delay interrupted")
+        }
     }
 }

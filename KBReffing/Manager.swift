@@ -77,8 +77,7 @@ class Manager: ObservableObject {
             let statCopy = statChange(stat, game)
             statState.insert(statCopy, at: 0)
         }
-        setCurrentStatsOnGame()
-        setDefaults()
+        saveGame()
     }
 
     func removeGame(at offsets: IndexSet) -> Void {
@@ -97,6 +96,7 @@ class Manager: ObservableObject {
     }
     
     func setStats(_ stats: [String: Int]) -> Void {
+        print("HERE: \(stats)")
         statState.insert(stats, at: 0)
         selectedGame?.currentStats = stats
     }
@@ -107,6 +107,11 @@ class Manager: ObservableObject {
     
     func disableRedo() -> Bool {
         return currentIndex == 0
+    }
+    
+    func saveGame() -> Void {
+        setCurrentStatsOnGame()
+        setDefaults()
     }
     
     // ---------------------------
@@ -128,11 +133,7 @@ class Manager: ObservableObject {
         }
         switch stat {
         case "redo":
-            print("REDO IN UNDOORREDO")
-            print("### \(currentIndex - 1) ###")
             guard (currentIndex - 1) >= 0 else { return }
-            print("*** \(currentIndex - 1) ***")
-            
             currentIndex -= 1
         case "undo":
             guard currentIndex + 1 < statState.count else {
