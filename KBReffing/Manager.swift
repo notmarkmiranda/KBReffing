@@ -65,7 +65,7 @@ class Manager: ObservableObject {
     
     func buttonClick(_ stat: String) -> Void {
         let conversion = ["out": "outs", "strike": "strikes", "foul": "fouls", "ball": "balls", "safe": "safe", "run": "run", "undo": "undo", "redo": "redo"]
-        guard let stat = conversion[stat], let game = selectedGame else { return }
+        guard var stat = conversion[stat], let game = selectedGame else { return }
 
         switch stat {
         case "undo", "redo":
@@ -74,6 +74,11 @@ class Manager: ObservableObject {
             if currentIndex != 0 {
                 resetStatState()
             }
+            
+            if game.combineStrikesFouls() == true && stat == "fouls" {
+                stat = "strikes"
+            }
+            
             let statCopy = statChange(stat, game)
             statState.insert(statCopy, at: 0)
         }
@@ -96,7 +101,6 @@ class Manager: ObservableObject {
     }
     
     func setStats(_ stats: [String: Int]) -> Void {
-        print("HERE: \(stats)")
         statState.insert(stats, at: 0)
         selectedGame?.currentStats = stats
     }

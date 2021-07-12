@@ -59,7 +59,6 @@ struct ContentView: View {
     func loadGames() {
         do {
             try manager.setGames()
-            print("YO: \(manager.allGames)")
         } catch {
             print(error)
         }
