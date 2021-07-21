@@ -26,26 +26,26 @@ struct EditStats: View {
                 Stepper(value: $topOrBottom, in: 0...99) {
                     Text("Top or Bottom: \(topOrBottom % 2 == 0 ? "Top" : "Bottom")")
                 }
-                Stepper(value: $inning, in: 1...9) {
+                Stepper(value: $inning, in: 1...99) {
                     Text("Current inning: \(inning)")
                 }
                 .accessibility(identifier: "inningStepper")
                 if combineStrikesAndFouls() {
-                    Stepper(value: $strikes, in: 1...3) {
-                        Text("Number of Strikes & Fouls: \(strikes)")
+                    Stepper(value: $strikes, in: 1...maxStrikesAndFouls()) {
+                        Text("Strikes & Fouls: \(strikes)")
                     }
                     .accessibility(identifier: "strikeAndFoulStepper")
                 } else {
-                    Stepper(value: $strikes, in: 1...3) {
-                        Text("Number of Strikes: \(strikes)")
+                    Stepper(value: $strikes, in: 1...maxStrikes()) {
+                        Text("Strikes: \(strikes)")
                     }
                     .accessibility(identifier: "strikeStepper")
-                    Stepper(value: $fouls, in: 1...10) {
-                        Text("Number of Fouls: \(fouls)")
+                    Stepper(value: $fouls, in: 1...maxFouls()) {
+                        Text("Fouls: \(fouls)")
                     }
                 }
-                Stepper(value: $outs, in: 1...3) {
-                    Text("Number of Outs: \(outs)")
+                Stepper(value: $outs, in: 1...maxOuts()) {
+                    Text("Outs: \(outs)")
                 }
                 Stepper(value: $awayScore, in: 0...99) {
                     Text("Away Score: \(awayScore)")
@@ -95,6 +95,29 @@ struct EditStats: View {
             return combined
         }
         return true
+    }
+    
+    private func maxStrikesAndFouls() -> Int {
+        return maxStat(stat: "strikesFoulsPerOut")
+    }
+    
+    private func maxStrikes() -> Int {
+        return maxStat(stat: "strikesPerOut")
+    }
+    
+    private func maxFouls() -> Int {
+        return maxStat(stat: "foulsPerOut")
+    }
+    
+    private func maxOuts() -> Int {
+        return maxStat(stat: "outsPerInning")
+    }
+    
+    private func maxStat(stat: String) -> Int {
+        guard let game = manager.selectedGame else { return 0 }
+        
+        // subtracting one so we don't need to increment an out or inning based on an edit
+        return game.numbersDictionary[stat]! - 1
     }
 }
 
